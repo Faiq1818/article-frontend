@@ -5,29 +5,32 @@ import { ErrorHandling } from "@/helpers/errorHandling";
 
 export default function Article() {
   const router = useRouter();
-  const [email, setEmail] = useState<string>("")
-  const [password, setPassword] = useState<string>("")
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleLogin = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
         },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
+      );
 
-      ErrorHandling(res)
+      ErrorHandling(res);
 
       const data = await res.json();
       // localStorage.setItem("auth", data.token);
       // router.push("/admin/dashboard/article");
     } catch (err) {
-      console.error("Ini error: ",err);
+      console.error("Ini error: ", err);
     }
   };
 
@@ -66,5 +69,5 @@ export default function Article() {
         </div>
       </div>
     </>
-  )
+  );
 }
