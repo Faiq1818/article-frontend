@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ErrorHandling } from "@/helpers/errorHandling";
 
-export default function Article() {
+export default function AuthLogin() {
   const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -28,9 +28,9 @@ export default function Article() {
 
       const data = await res.json();
       // localStorage.setItem("auth", data.token);
-      // router.push("/admin/dashboard/article");
+      router.push("/article");
     } catch (err) {
-      console.error("Ini error: ", err);
+      console.log("Ini error: ", err);
     }
   };
 
