@@ -27,7 +27,7 @@ export default function AuthLogin() {
       ErrorHandling(res);
 
       const data = await res.json();
-      // localStorage.setItem("auth", data.token);
+      localStorage.setItem("auth", data.token);
       router.push("/article");
     } catch (err) {
       console.log("Ini error: ", err);
@@ -39,7 +39,7 @@ export default function AuthLogin() {
       <div className="flex justify-center h-screen items-center">
         <div className="border p-5 rounded-2xl border-slate-400">
           <div className="font-bold text-xl">Login</div>
-          <p className="mt-4">Username:</p>
+          <p className="mt-4">Email:</p>
           <input
             className="border rounded-xl border-slate-400  px-2"
             value={email}
