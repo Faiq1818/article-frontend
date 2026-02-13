@@ -1,5 +1,6 @@
 "use client";
 import { ErrorHandling } from "@/helpers/errorHandling";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -45,24 +46,27 @@ export default function RootComponentMainSection() {
     }
   };
 
-  console.log(articles);
-
   return (
-    <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 mt-10 dark:bg-black">
+    <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 mt-5 dark:bg-black">
       {articles.map((item, index) => (
-        <div key={index} className="border m-5 border-slate-700 py-2 px-4">
-          <p className="font-bold text-xl">{item.title}</p>
-          <span className="text-sm text-slate-300">
-            {new Date(item.updated_at).toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </span>
-          <p>
-            Ini adalah deskripsi Ini adalah deskripsi Ini adalah deskripsi Ini
-            adalah deskripsi Ini adalah deskripsi
-          </p>
+        <div
+          key={index}
+          className="border m-5 border-slate-700 py-2 px-4 hover:bg-gray-900 cursor-pointer"
+        >
+          <Link href={`/article/${item.slug}`}>
+            <p className="font-bold text-xl">{item.title}</p>
+            <p className="text-sm text-slate-300">
+              {new Date(item.updated_at).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+            <p>
+              Ini adalah deskripsi Ini adalah deskripsi Ini adalah deskripsi Ini
+              adalah deskripsi Ini adalah deskripsi
+            </p>
+          </Link>
         </div>
       ))}
     </div>
