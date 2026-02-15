@@ -64,20 +64,22 @@ export default function Article() {
       </Link>
 
       <div>
-        {articles.map((article, i) => (
-          <div key={i} className="mx-10">
-            <div className="border my-5 p-4 rounded-3xl border-slate-600">
-              <div className="flex items-center justify-between">
-                <span>{article.title}</span>
-                <div>
-                  <Link href={`/article/${article.slug}`}>
-                    <IoIosResize />
-                  </Link>
+        {!articles
+          ? ""
+          : articles.map((article, i) => (
+              <div key={i} className="mx-10">
+                <div className="border my-5 p-4 rounded-3xl border-slate-600">
+                  <div className="flex items-center justify-between">
+                    <span>{article.title}</span>
+                    <div>
+                      <Link href={`/article/${article.slug}`}>
+                        <IoIosResize />
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ))}
       </div>
     </>
   );

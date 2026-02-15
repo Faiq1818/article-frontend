@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { MdNavigateNext } from "react-icons/md";
 import { ErrorHandling } from "@/helpers/errorHandling";
 
@@ -12,28 +12,32 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
 });
 
 export default function MyComponent() {
-  const router = useRouter();
+  // const router = useRouter();
   const [title, setTitle] = useState("");
   const [quillValue, setQuillValue] = useState("");
+  const [image, setImage] = useState<File | null>(null);
 
   const handleSaveArticle = async () => {
     try {
+      const formData = new FormData();
+
+      formData.append("title", title);
+      formData.append("content", quillValue);
+
+      if (image) {
+        formData.append("image", image);
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/article`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: title,
-            content: quillValue,
-          }),
+          body: formData,
         },
       );
 
       ErrorHandling(res);
-      router.push("/article");
+      // router.push("/article");
       alert("Save Success");
     } catch (err) {
       console.log("Ini error: ", err);
@@ -41,11 +45,11 @@ export default function MyComponent() {
   };
 
   return (
-    <div className="mx-20 mt-20">
+    <form className="mx-20 mt-20">
       <div>
         {/*Title input*/}
         <div className="flex flex-col">
-          <span>Title:</span>
+          <label>Title:</label>
           <div className="w-1/2 flex">
             <input
               className="p-2 flex w-full border mb-5 outline-none"
@@ -55,9 +59,24 @@ export default function MyComponent() {
           </div>
         </div>
 
+        {/*Image input*/}
+        <div className="flex flex-col">
+          <label>Image:</label>
+          <div className="w-1/2 flex">
+            <input
+              className="p-1 flex text-black border border-slate-100 bg-slate-200 mb-5 outline-none cursor-pointer hover:bg-slate-300"
+              accept="image/*"
+              onChange={(e) => {
+                setImage(e.target.files?.[0] || null);
+              }}
+              type="file"
+            />
+          </div>
+        </div>
+
         {/*Content input*/}
         <div className="flex flex-col">
-          <span>Content:</span>
+          <label>Content:</label>
           <ReactQuill
             theme="snow"
             value={quillValue}
@@ -76,6 +95,6 @@ export default function MyComponent() {
           <MdNavigateNext className="text-2xl" />
         </div>
       </div>
-    </div>
+    </form>
   );
 }
