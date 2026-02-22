@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { MdNavigateNext } from "react-icons/md";
 import { ErrorHandling } from "@/helpers/errorHandling";
 
@@ -11,19 +11,20 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
   loading: () => <p>Loading Editor...</p>,
 });
 
-export default function MyComponent() {
-  // const router = useRouter();
+export default function AdminDashboardArticleAddarticle() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [quillValue, setQuillValue] = useState("");
   const [image, setImage] = useState<File | null>(null);
 
   const handleSaveArticle = async () => {
     try {
+      // making multipart object and append its body
       const formData = new FormData();
-
       formData.append("title", title);
       formData.append("content", quillValue);
-
+      formData.append("description", description);
       if (image) {
         formData.append("image", image);
       }
@@ -37,10 +38,13 @@ export default function MyComponent() {
       );
 
       ErrorHandling(res);
-      // router.push("/article");
+      if (!res.ok) return;
+
+      router.push("/admin/dashboard/article");
       alert("Save Success");
     } catch (err) {
-      console.log("Ini error: ", err);
+      console.error(err);
+      alert("Terjadi kesalahan jaringan. Silakan coba lagi.");
     }
   };
 
@@ -52,9 +56,21 @@ export default function MyComponent() {
           <label>Title:</label>
           <div className="w-1/2 flex">
             <input
-              className="p-2 flex w-full border mb-5 outline-none"
+              className="p-2 flex w-full border mb-5 outline-none hover:bg-gray-800"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/*Description input*/}
+        <div className="flex flex-col">
+          <label>Description:</label>
+          <div className="w-full flex">
+            <input
+              className="p-2 flex w-full border mb-5 outline-none hover:bg-gray-800"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>

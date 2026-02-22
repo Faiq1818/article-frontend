@@ -1,17 +1,23 @@
 export function ErrorHandling(res: Response) {
-  console.log("halohalo: ", res);
+  if (res.ok) return;
 
   switch (res.status) {
-    case 204:
-      alert("Data tidak ditemukan");
-      break;
     case 400:
-      alert("Input salah, pastikan mengisi input dengan benar");
+      alert("Input salah");
+      break;
+    case 401:
+      alert("Unauthorized");
+      break;
+    case 403:
+      alert("Forbidden");
+      break;
+    case 404:
+      alert("Data tidak ditemukan");
       break;
     case 500:
       alert("Server error");
       break;
     default:
-      break;
+      alert(`Error: ${res.status}`);
   }
 }

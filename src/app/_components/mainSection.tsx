@@ -9,6 +9,7 @@ interface Article {
   id: string;
   slug: string;
   title: string;
+  description: string;
   content: string;
   image_url: string;
 }
@@ -43,11 +44,10 @@ export default function RootComponentMainSection() {
       const data = await res.json();
       setArticles(data.data);
     } catch (err) {
-      console.log("Ini error: ", err);
+      console.error(err);
+      alert("Terjadi kesalahan jaringan. Silakan coba lagi.");
     }
   };
-
-  console.log(articles);
 
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-5 dark:bg-black">
@@ -56,7 +56,7 @@ export default function RootComponentMainSection() {
         : articles.map((item, index) => (
             <div
               key={index}
-              className="border m-5 border-slate-700 py-2 px-4 hover:bg-gray-900 cursor-pointer rounded"
+              className="border m-5 border-slate-700 py-2 px-4 hover:opacity-80 cursor-pointer rounded"
             >
               <Link href={`/article/${item.slug}`}>
                 <p className="font-bold text-xl">{item.title}</p>
@@ -73,10 +73,7 @@ export default function RootComponentMainSection() {
                   className="rounded my-2"
                   src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${item?.image_url ?? ""}`}
                 />
-                <p>
-                  Ini adalah deskripsi Ini adalah deskripsi Ini adalah deskripsi
-                  Ini adalah deskripsi Ini adalah deskripsi
-                </p>
+                <p>{item.description}</p>
               </Link>
             </div>
           ))}

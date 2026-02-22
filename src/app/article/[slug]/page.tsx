@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 type Article = {
+  updated_at: string;
   id: string;
   slug: string;
   title: string;
@@ -13,7 +14,6 @@ type Article = {
 
 export default function Page() {
   const params = useParams<{ slug: string }>();
-
   const [article, setArticle] = useState<Article>();
 
   useEffect(() => {
@@ -39,27 +39,23 @@ export default function Page() {
       const data = await res.json();
       setArticle(data.data);
     } catch (err) {
-      console.log("Ini error: ", err);
+      console.error(err);
+      alert("Terjadi kesalahan jaringan. Silakan coba lagi.");
     }
   };
 
-  console.log("slug", params.slug);
-  console.log("article", article);
-
-  // Fungsi utilitas sederhana untuk membersihkan &nbsp; menjadi spasi biasa
   const cleanContent = (htmlContent: string) => {
     if (!htmlContent) return "";
-    // Regex global (/g) untuk mengganti semua instance &nbsp; dengan spasi biasa
     return htmlContent.replace(/&nbsp;/g, " ");
   };
 
   return (
     <main className="justify-center flex">
       <article className="max-w-3xl py-12 sm:px-6 sm:py-16">
-        {/* HEADER: Judul Artikel */}
+        {/* Artikel title */}
         <header className="mb-10 text-center">
           <div
-            className="text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl mb-6"
+            className="text-3xl font-extrabold sm:text-4xl md:text-5xl mb-6"
             dangerouslySetInnerHTML={{
               __html: cleanContent(article?.title ?? ""),
             }}
@@ -68,10 +64,18 @@ export default function Page() {
 
         <img
           alt={article?.slug ?? ""}
+          className="rounded"
           src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${article?.image_url ?? ""}`}
         />
+        <p className="text-sm text-slate-300 mb-5 mt-2">
+          {new Date(article?.updated_at ?? "").toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}
+        </p>
 
-        {/* CONTENT BODY */}
+        {/* Article content */}
         <div
           dangerouslySetInnerHTML={{
             __html: cleanContent(article?.content ?? ""),
