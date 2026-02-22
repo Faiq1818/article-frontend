@@ -8,6 +8,7 @@ type Article = {
   slug: string;
   title: string;
   content: string;
+  image_url: string;
 };
 
 export default function Page() {
@@ -64,6 +65,11 @@ export default function Page() {
             }}
           />
         </header>
+
+        <img
+          alt={article?.slug ?? ""}
+          src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${article?.image_url ?? ""}`}
+        />
 
         {/* CONTENT BODY */}
         <div
