@@ -2,15 +2,7 @@
 import { ErrorHandling } from "@/helpers/errorHandling";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-
-type Article = {
-  updated_at: string;
-  id: string;
-  slug: string;
-  title: string;
-  content: string;
-  image_url: string;
-};
+import type { Article } from "@/types/article";
 
 export default function Page() {
   const params = useParams<{ slug: string }>();

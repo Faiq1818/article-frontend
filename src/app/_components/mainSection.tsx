@@ -3,16 +3,7 @@ import { ErrorHandling } from "@/helpers/errorHandling";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface Article {
-  updated_at: string;
-  id: string;
-  slug: string;
-  title: string;
-  description: string;
-  content: string;
-  image_url: string;
-}
+import type { Article } from "@/types/article";
 
 export default function RootComponentMainSection() {
   const searchParams = useSearchParams();

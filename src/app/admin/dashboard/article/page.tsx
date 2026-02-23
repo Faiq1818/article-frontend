@@ -5,13 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { IoIosResize } from "react-icons/io";
-
-interface Article {
-  id: string;
-  slug: string;
-  title: string;
-  content: string;
-}
+import type { Article } from "@/types/article";
 
 export default function Article() {
   // get params from url
@@ -50,37 +44,50 @@ export default function Article() {
 
   return (
     <>
-      <div className="flex justify-center mt-5">
-        <span className="text-xl">Article Dashboard</span>
-      </div>
+      <header className="flex justify-center mt-5">
+        <h1 className="text-xl">Article Dashboard</h1>
+      </header>
 
-      <Link href={"/admin/dashboard/article/addarticle"}>
-        <div className="flex mt-5 ml-10">
-          <div className="flex items-center gap-2 border rounded-3xl py-2 px-4 border-slate-600 hover:bg-gray-800 transition duration-75 cursor-pointer">
+      <nav className="mt-5 ml-10">
+        <Link href="/admin/dashboard/article/addarticle">
+          <span className="inline-flex items-center gap-2 border rounded py-2 px-4 border-slate-600 hover:bg-gray-800 transition duration-75 cursor-pointer">
             <AiOutlineFileAdd className="text-xl" />
-            <span>Tambah article</span>
-          </div>
-        </div>
-      </Link>
+            Tambah article
+          </span>
+        </Link>
+      </nav>
 
-      <div>
-        {!articles
-          ? ""
-          : articles.map((article, i) => (
-              <div key={i} className="mx-10">
-                <div className="border my-5 p-4 rounded-3xl border-slate-600">
-                  <div className="flex items-center justify-between">
-                    <span>{article.title}</span>
+      <main>
+        {articles && articles.length > 0 && (
+          <section className="mx-10 mt-5">
+            <ul className="space-y-5">
+              {articles.map((article, i) => (
+                <li key={i}>
+                  <div className="flex items-center justify-between border p-4 rounded border-slate-600">
                     <div>
-                      <Link href={`/article/${article.slug}`}>
-                        <IoIosResize />
-                      </Link>
+                      <h2 className="font-medium">{article.title}</h2>
+                      <p className="text-sm text-slate-300">
+                        {new Date(article.updated_at).toLocaleDateString(
+                          "id-ID",
+                          {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          },
+                        )}
+                      </p>
                     </div>
+
+                    <Link href={`/article/${article.slug}`}>
+                      <IoIosResize />
+                    </Link>
                   </div>
-                </div>
-              </div>
-            ))}
-      </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </main>
     </>
   );
 }
