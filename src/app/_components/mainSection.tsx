@@ -59,11 +59,13 @@ export default function RootComponentMainSection() {
                   })}
                 </p>
 
-                <img
-                  alt={item?.slug ?? ""}
-                  className="rounded my-2"
-                  src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${item?.image_url ?? ""}`}
-                />
+                <div className="aspect-video my-2 overflow-hidden rounded">
+                  <img
+                    alt={item?.slug ?? ""}
+                    className="w-full h-full object-cover"
+                    src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${item?.image_url ?? ""}`}
+                  />
+                </div>
                 <p>{item.description}</p>
               </Link>
             </div>

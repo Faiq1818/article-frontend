@@ -1,3 +1,4 @@
+import SharedFooter from "@/components/shared/footer";
 import { GetArticleSlug } from "@/lib/api/article";
 
 export default async function ArticleSlug({
@@ -14,8 +15,8 @@ export default async function ArticleSlug({
   };
 
   return (
-    <>
-      <main className="justify-center flex">
+    <div className="mx-5 flex flex-col min-h-screen">
+      <main className="justify-center flex grow">
         <article className="max-w-3xl py-12 sm:px-6 sm:py-16">
           {/* Artikel title */}
           <header className="mb-10 text-center">
@@ -48,6 +49,7 @@ export default async function ArticleSlug({
           />
         </article>
       </main>
-    </>
+      <SharedFooter />
+    </div>
   );
 }
