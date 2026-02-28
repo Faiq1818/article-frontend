@@ -43,6 +43,7 @@ export default async function ArticleSlug({
 
           {/* Article content */}
           <div
+            className="prose prose-invert max-w-none"
             dangerouslySetInnerHTML={{
               __html: cleanContent(article?.content ?? ""),
             }}

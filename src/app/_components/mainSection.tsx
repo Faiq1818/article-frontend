@@ -40,6 +40,8 @@ export default function RootComponentMainSection() {
     }
   };
 
+  console.log(articles);
+
   return (
     <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-5 dark:bg-black">
       {!articles
@@ -66,7 +68,7 @@ export default function RootComponentMainSection() {
                     src={`${process.env.NEXT_PUBLIC_S3_BUCKET_URL}/${item?.image_url ?? ""}`}
                   />
                 </div>
-                <p>{item.description}</p>
+                <p className="line-clamp-3">{item.description}</p>
               </Link>
             </div>
           ))}
