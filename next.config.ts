@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/dashboard/article",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

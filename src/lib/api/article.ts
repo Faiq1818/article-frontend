@@ -14,7 +14,7 @@ export async function GetArticleSlug(slug: string): Promise<Article | null> {
       },
     );
 
-    // ErrorHandling(res);
+    ErrorHandling(res);
 
     const data = await res.json();
     return data.data;
