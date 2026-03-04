@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { IoIosResize } from "react-icons/io";
+import { CiEdit, CiTrash } from "react-icons/ci";
 import type { Article } from "@/types/article";
 
 export default function Article() {
@@ -78,9 +79,19 @@ export default function Article() {
                       </p>
                     </div>
 
-                    <Link href={`/article/${article.slug}`}>
-                      <IoIosResize />
-                    </Link>
+                    <div className="flex gap-4">
+                      <Link href={`/article/${article.slug}`}>
+                        <IoIosResize />
+                      </Link>
+                      <Link
+                        href={`/admin/dashboard/article/editarticle/${article.slug}`}
+                      >
+                        <CiEdit />
+                      </Link>
+                      <Link href={`/article/${article.slug}`}>
+                        <CiTrash />
+                      </Link>
+                    </div>
                   </div>
                 </li>
               ))}
