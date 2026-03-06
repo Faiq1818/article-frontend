@@ -21,14 +21,12 @@ export default function AuthLogin() {
             email: email,
             password: password,
           }),
+          credentials: "include",
         },
       );
 
       ErrorHandling(res);
-
-      const data = await res.json();
-      localStorage.setItem("auth", data.token);
-      router.push("/article");
+      router.push("/");
     } catch (err) {
       console.log("Ini error: ", err);
     }

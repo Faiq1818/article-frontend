@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { MdNavigateNext } from "react-icons/md";
 import { ErrorHandling } from "@/helpers/errorHandling";
-import { GetArticleSlug } from "@/lib/api/article";
+import { GetAdminArticleSlug } from "@/lib/api/article";
 import { Article } from "@/types/article";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {
@@ -29,7 +29,7 @@ export default function AdminDashboardArticleAddarticle({
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await GetArticleSlug(slug);
+      const data = await GetAdminArticleSlug(slug);
       setArticle(data);
       setTitle(data!.title);
       setDescription(data!.description);
@@ -50,9 +50,9 @@ export default function AdminDashboardArticleAddarticle({
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/article`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/article/${slug}`,
         {
-          method: "POST",
+          method: "PUT",
           body: formData,
         },
       );

@@ -12,7 +12,7 @@ export default function Article() {
   // get params from url
   const searchParams = useSearchParams();
   const pageParams = Number(searchParams.get("page")) || 1;
-  const limitParams = Number(searchParams.get("limit")) || 5;
+  const limitParams = Number(searchParams.get("limit")) || 100;
 
   const [articles, setArticle] = useState<Article[]>([]);
 

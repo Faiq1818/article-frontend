@@ -4,7 +4,7 @@ import RootComponentMainSection from "./_components/mainSection";
 
 export default function Root() {
   return (
-    <div className="flex flex-col min-h-screen mx-5 dark:bg-black">
+    <div className="flex flex-col min-h-screen dark:bg-black">
       <SharedNavbar />
       <main className="grow">
         <RootComponentMainSection />

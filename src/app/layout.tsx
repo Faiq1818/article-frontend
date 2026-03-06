@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Tinos } from "next/font/google";
 import "./globals.css";
+import SharedNavbar from "@/components/shared/navbar";
+import SharedFooter from "@/components/shared/footer";
 
 const tinos = Tinos({
   weight: "400",
