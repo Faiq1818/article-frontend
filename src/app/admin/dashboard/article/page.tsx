@@ -16,6 +16,7 @@ export default function Article() {
   const limitParams = Number(searchParams.get("limit")) || 100;
 
   const [articles, setArticle] = useState<Article[]>([]);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +42,7 @@ export default function Article() {
       const data = await res.json();
       setArticle(data.data);
     } catch (err) {
-      console.log("Ini error: ", err);
+      setIsError(true);
     }
   };
 
@@ -102,7 +103,7 @@ export default function Article() {
         )}
       </main>
 
-      {/* <CustomPopup /> */}
+      <CustomPopup isError={isError} setIsError={setIsError} />
     </>
   );
 }

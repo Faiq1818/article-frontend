@@ -1,8 +1,13 @@
-"use client";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { MdErrorOutline } from "react-icons/md";
 
-export default function CustomPopup() {
+type Props = {
+  isError: boolean;
+  setIsError: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function CustomPopup({ isError, setIsError }: Props) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -13,10 +18,27 @@ export default function CustomPopup() {
   // can't running it in the server that can make it error
   if (!mounted) return null;
 
-  return createPortal(
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-      <div className="bg-white text-black p-6 rounded">Welcome</div>
-    </div>,
-    document.body,
-  );
+  if (isError) {
+    return createPortal(
+      <div className="fixed inset-0 flex items-center justify-center bg-black/70">
+        <div className="bg-black text-white p-3 border-slate-600 border rounded">
+          <div className="flex items-center gap-2">
+            <MdErrorOutline />
+            <span>Something wrong</span>
+          </div>
+          <div className="text-[#a0a0a0]">Error when fetching data</div>
+
+          <div className="flex pt-2 justify-end">
+            <div
+              className="bg-black rounded border border-slate-600 px-2 py-1 cursor-pointer hover:bg-gray-800"
+              onClick={() => setIsError(false)}
+            >
+              Close
+            </div>
+          </div>
+        </div>
+      </div>,
+      document.body,
+    );
+  }
 }
