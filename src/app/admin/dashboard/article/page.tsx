@@ -7,6 +7,7 @@ import { AiOutlineFileAdd } from "react-icons/ai";
 import { IoIosResize } from "react-icons/io";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import type { Article } from "@/types/article";
+import CustomPopup from "@/components/shared/popupAlert";
 
 export default function Article() {
   // get params from url
@@ -26,12 +27,13 @@ export default function Article() {
   const GetArticle = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/article?limit=${limitParams}&page=${pageParams}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/article?limit=${limitParams}&page=${pageParams}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
         },
       );
       ErrorHandling(res);
@@ -99,6 +101,8 @@ export default function Article() {
           </section>
         )}
       </main>
+
+      {/* <CustomPopup /> */}
     </>
   );
 }
