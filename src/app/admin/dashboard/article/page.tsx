@@ -15,17 +15,14 @@ export default function Article() {
   const pageParams = Number(searchParams.get("page")) || 1;
   const limitParams = Number(searchParams.get("limit")) || 100;
 
-  const [articles, setArticle] = useState<Article[]>([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await GetArticle();
-    };
-    fetchData();
+    getArticle();
   }, []);
 
-  const GetArticle = async () => {
+  const getArticle = async () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/article?limit=${limitParams}&page=${pageParams}`,
@@ -40,8 +37,9 @@ export default function Article() {
       ErrorHandling(res);
 
       const data = await res.json();
-      setArticle(data.data);
+      setArticles(data.data);
     } catch (err) {
+      console.error("Failed to fetch articles:", err);
       setIsError(true);
     }
   };
@@ -62,11 +60,11 @@ export default function Article() {
       </nav>
 
       <main>
-        {articles && articles.length > 0 && (
+        {articles.length > 0 && (
           <section className="mx-10 mt-5">
             <ul className="space-y-5">
-              {articles.map((article, i) => (
-                <li key={i}>
+              {articles.map((article) => (
+                <li key={article.slug}>
                   <div className="flex items-center justify-between border p-4 rounded border-slate-600">
                     <div>
                       <h2 className="font-medium">{article.title}</h2>
@@ -103,7 +101,12 @@ export default function Article() {
         )}
       </main>
 
-      <CustomPopup isError={isError} setIsError={setIsError} />
+      <CustomPopup
+        msg1={"Something wrong"}
+        msg2={"Error when fetching data"}
+        isError={isError}
+        setIsError={setIsError}
+      />
     </>
   );
 }
