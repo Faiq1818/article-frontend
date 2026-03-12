@@ -1,7 +1,7 @@
 "use client";
 import { ErrorHandling } from "@/helpers/errorHandling";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiOutlineFileAdd } from "react-icons/ai";
 import { IoIosResize } from "react-icons/io";
@@ -12,20 +12,23 @@ import CustomPopup from "@/components/shared/popupAlert";
 export default function Article() {
   // get params from url
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const pageParams = Number(searchParams.get("page")) || 1;
-  const limitParams = Number(searchParams.get("limit")) || 100;
+  const limitParams = Number(searchParams.get("limit")) || 6;
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    getArticle();
-  }, []);
+    getArticles();
+  }, [pageParams]);
 
-  const getArticle = async () => {
+  const getArticles = async () => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/article?limit=${limitParams}&page=${pageParams}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/admin/articles?limit=${limitParams}&page=${pageParams}`,
         {
           method: "GET",
           headers: {
@@ -37,11 +40,17 @@ export default function Article() {
       ErrorHandling(res);
 
       const data = await res.json();
-      setArticles(data.data);
+      setArticles(data.data.articles);
     } catch (err) {
       console.error("Failed to fetch articles:", err);
       setIsError(true);
     }
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage.toString());
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -100,6 +109,26 @@ export default function Article() {
           </section>
         )}
       </main>
+
+      <div className="flex justify-center items-center gap-4 my-10">
+        <button
+          onClick={() => handlePageChange(pageParams - 1)}
+          disabled={pageParams <= 1}
+          className="border border-slate-700 px-6 py-2 rounded hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          Previous
+        </button>
+
+        <span className="text-slate-400 font-mono">{pageParams}</span>
+
+        <button
+          onClick={() => handlePageChange(pageParams + 1)}
+          disabled={articles.length < limitParams}
+          className="border border-slate-700 px-6 py-2 rounded hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        >
+          Next
+        </button>
+      </div>
 
       <CustomPopup
         msg1={"Something wrong"}
